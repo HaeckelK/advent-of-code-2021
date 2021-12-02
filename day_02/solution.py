@@ -1,17 +1,17 @@
 import argparse
 import os
 from typing import Dict, Any, List, Tuple
+from dataclasses import dataclass
 
 
+@dataclass
 class Submarine:
-    def __init__(self) -> None:
-        self.depth = 0
-        self.horizontal_pos = 0
-        self.aim = 0
-        return
+    depth: int = 0
+    horizontal_pos: int = 0
+    aim: int = 0
 
 
-def process_instructions_as_movment(sub: Submarine, instructions: List[Tuple[str, int]]) -> None:
+def process_instructions_as_movement(sub: Submarine, instructions: List[Tuple[str, int]]) -> None:
     for instruction, amount in instructions:
         if instruction == "forward":
             sub.horizontal_pos += amount
@@ -19,6 +19,18 @@ def process_instructions_as_movment(sub: Submarine, instructions: List[Tuple[str
             sub.depth -= amount
         elif instruction == "down":
             sub.depth += amount
+    return
+
+
+def process_instructions_as_aim(sub: Submarine, instructions: List[Tuple[str, int]]) -> None:
+    for instruction, amount in instructions:
+        if instruction == "forward":
+            sub.horizontal_pos += amount
+            sub.depth += sub.aim * amount
+        elif instruction == "up":
+            sub.aim -= amount
+        elif instruction == "down":
+            sub.aim += amount
     return
 
 
@@ -30,9 +42,12 @@ def load_file(part: int, source: str) -> List[Tuple[str, int]]:
 
 def main(part: int, source: str) -> None:
     submarine = Submarine()
-    instructions = load_file(part, source)
+    instructions = load_file(1, source)
 
-    process_func = process_instructions_as_movment
+    if part == 1:
+        process_func = process_instructions_as_movement
+    else:
+        process_func = process_instructions_as_aim
 
     process_func(submarine, instructions)
 
