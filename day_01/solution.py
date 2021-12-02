@@ -34,7 +34,7 @@ def main(part: int, source: str) -> None:
         data = load_file(part, source)
         increase_count, _ = get_movement_counts(data)
         print(increase_count)
-
+    
     return
 
 
