@@ -23,6 +23,13 @@ def get_movement_counts(data: List[int]) -> Tuple[int, int]:
     return increase_count, decrease_count
 
 
+def get_windowed(data: List[int], interval: int) -> List[int]:
+    windowed = []
+    for i in range(0, len(data) - interval + 1):
+        windowed.append(sum(data[i:i+interval]))
+    return windowed
+
+
 def main(part: int, source: str) -> None:
     if part == 1 and source == "sample":
         data = load_file(part, source)
@@ -34,7 +41,19 @@ def main(part: int, source: str) -> None:
         data = load_file(part, source)
         increase_count, _ = get_movement_counts(data)
         print(increase_count)
-    
+    elif part == 2 and source == "sample":
+        data = load_file(1, source)
+        windowed = get_windowed(data, 3)
+        increase_count, _ = get_movement_counts(windowed)
+        result = increase_count
+        print(increase_count)
+        assert result == 5
+    elif part == 2 and source == "actual":
+        data = load_file(1, source)
+        increase_count, _ = get_movement_counts(get_windowed(data, 3))
+        result = increase_count
+        print(increase_count)
+
     return
 
 
